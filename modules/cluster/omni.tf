@@ -109,6 +109,7 @@ resource "terraform_data" "cluster" {
     "NAME"          = var.name
     "K8S_VERSION"   = var.k8s_version
     "TALOS_VERSION" = var.talos_version
+    "NETWORK_CONFIG_SUBNET" = local.subnet
   }
 
   provisioner "local-exec" {
@@ -118,8 +119,20 @@ resource "terraform_data" "cluster" {
   }
 
   provisioner "local-exec" {
+    when        = create
+    environment = self.input
+    command     = "envsubst < ${path.module}/controlplanes-patch.yaml | cat; envsubst < ${path.module}/controlplanes-patch.template.yaml | ./omnictl apply -f /dev/stdin"
+  }
+
+  provisioner "local-exec" {
     when        = destroy
     environment = self.output
     command     = "envsubst < ${path.module}/cluster.template.yaml | ./omnictl cluster template delete -v --destroy-disconnected-machines -f /dev/stdin"
+  }
+
+  provisioner "local-exec" {
+    when        = destroy
+    environment = self.output
+    command     = "./omnictl delete ConfigPatches 600-$NAME-controlplanes"
   }
 }

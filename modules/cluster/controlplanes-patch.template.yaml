@@ -1,0 +1,15 @@
+metadata:
+  id: 600-$NAME-controlplanes
+  labels:
+    omni.sidero.dev/cluster: $NAME
+    omni.sidero.dev/machine-set: $NAME-control-planes
+  namespace: default
+  type: ConfigPatches.omni.sidero.dev
+spec:
+  data: |-
+    cluster:
+      etcd:
+        advertisedSubnets:
+        - $NETWORK_CONFIG_SUBNET
+        listenSubnets:
+        - $NETWORK_CONFIG_SUBNET
