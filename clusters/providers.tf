@@ -1,5 +1,13 @@
 terraform {
-  required_version = ">= 0.12"
+  required_version = ">= 1.6.0"
+  cloud { 
+    
+    organization = "cedille" 
+
+    workspaces { 
+      name = "k8s-clusters" 
+    } 
+  } 
 
   required_providers {
     kubernetes = {
@@ -15,7 +23,7 @@ terraform {
     }
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.66.1"
+      version = "0.70.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -24,6 +32,10 @@ terraform {
     argocd = {
       source  = "argoproj-labs/argocd"
       version = "7.1.0"
+    }
+    vault = {
+      source = "hashicorp/vault"
+      version = "~> 4.6.0"
     }
   }
 }
@@ -51,4 +63,9 @@ provider "github" {
     installation_id = var.github_installation_id
     pem_file = var.github_pem_file
   }
+}
+
+provider "vault" {
+  token = var.vault_root_token
+  address = var.vault_address
 }

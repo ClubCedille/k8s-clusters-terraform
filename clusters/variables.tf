@@ -36,3 +36,15 @@ variable "github_pem_file" {
   type = string
   sensitive = true
 }
+
+variable "TFC_WORKSPACE_SLUG" {
+  type = string
+}
+
+variable "vault_root_token" {
+  type = string
+}
+
+variable "vault_address" {
+  
+}

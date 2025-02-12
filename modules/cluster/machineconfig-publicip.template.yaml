@@ -27,10 +27,12 @@ spec:
               - network: 10.0.21.0/24
           - deviceSelector:
               hardwareAddr: $EXTERNAL_INTERFACE_MAC
+            dhcp: false
             routes:
               - network: 142.137.247.0/24
           - deviceSelector:
               hardwareAddr: $CLUSTER_INTERFACE_MAC
+            dhcp: false
             addresses:
               - $IP
             routes:

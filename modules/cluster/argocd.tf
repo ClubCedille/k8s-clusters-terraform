@@ -1,5 +1,4 @@
 data "external" "cluster_token" {
-  for_each = toset(var.onboard_argocd ? ["true"] : []) 
   depends_on = [ terraform_data.cluster ]
   program = ["bash", "-c", "./omnictl kubeconfig --cluster ${var.name} --service-account --user argocd --force tmp-${var.name}-kubeconfig && cat tmp-${var.name}-kubeconfig | yq -j -c '.users[0].user'"]
 }
@@ -36,7 +35,7 @@ resource "argocd_cluster" "talos" {
   name   = var.name
 
   config {
-    bearer_token = data.external.cluster_token["true"].result["token"]
+    bearer_token = data.external.cluster_token.result["token"]
   }
 
   metadata {

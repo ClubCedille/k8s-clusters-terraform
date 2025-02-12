@@ -27,6 +27,7 @@ spec:
               - network: 10.0.21.0/24
           - deviceSelector:
               hardwareAddr: $CLUSTER_INTERFACE_MAC
+            dhcp: false
             addresses:
               - $IP
             routes:

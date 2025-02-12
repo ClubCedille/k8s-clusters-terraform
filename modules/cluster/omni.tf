@@ -4,6 +4,15 @@ resource "null_resource" "always_run" {
   }
 }
 
+resource "null_resource" "machine_configs_yaml" {
+  triggers = {
+    "always_run" = <<EOF
+    ${filemd5("${path.module}/machineconfig.template.yaml")}
+    ${filemd5("${path.module}/machineconfig-publicip.template.yaml")}
+    EOF
+  }
+}
+
 resource "terraform_data" "controlplanes_machine_configs" {
   depends_on = [proxmox_virtual_environment_vm.controlplanes]
   for_each   = { for i, node in var.controlplanes.nodes : i => node }
@@ -37,7 +46,7 @@ resource "terraform_data" "controlplanes_machine_configs" {
   }
 
   lifecycle {
-    //replace_triggered_by = [null_resource.always_run]
+    replace_triggered_by = [null_resource.machine_configs_yaml]
   }
 
 }
@@ -77,7 +86,7 @@ resource "terraform_data" "workers_machine_configs" {
   }
 
   lifecycle {
-    //replace_triggered_by = [null_resource.always_run]
+    replace_triggered_by = [null_resource.machine_configs_yaml]
   }
 }
 
