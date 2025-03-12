@@ -21,16 +21,19 @@ resource "terraform_data" "controlplanes_machine_configs" {
     "ROLE"                  = "controlplane"
     "UUID"                  = random_uuid.controlplanes_uuids[each.key].result
     "NETWORK_CONFIG_SUBNET" = local.subnet
+    "INTERNAL_SERVICES_SUBNET" = var.network_config.internal_services_subnet
     "IP"                    = "${cidrhost(local.subnet, 5 + parseint(each.key, 10))}/${var.network_config.cluster_cidr}"
     "GATEWAY"               = "${cidrhost(local.subnet, 1)}"
     "NAME"                  = var.name
     "DOMAIN"                = var.domain
-    "KEY"                   = each.key,
+    "KEY"                   = each.key
     "HAS_PUBLIC_IP"         = "false"
     "CLUSTER_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.controlplanes[each.key].network_device
     : lower(dev.mac_address) if dev.vlan_id == local.cluster_vlan_id][0]
     "INTERNAL_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.controlplanes[each.key].network_device
     : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_vlan_id][0]
+    "INTERNAL_SERVICES_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.controlplanes[each.key].network_device
+    : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_services_vlan_id][0]
   }
 
   provisioner "local-exec" {
@@ -59,11 +62,12 @@ resource "terraform_data" "workers_machine_configs" {
     "ROLE"                  = "worker"
     "UUID"                  = random_uuid.workers_uuids[each.key].result
     "NETWORK_CONFIG_SUBNET" = local.subnet
+    "INTERNAL_SERVICES_SUBNET" = var.network_config.internal_services_subnet
     "IP"                    = "${cidrhost(local.subnet, 15 + parseint(each.key, 10))}/${var.network_config.cluster_cidr}"
     "GATEWAY"               = "${cidrhost(local.subnet, 1)}"
     "NAME"                  = var.name
     "DOMAIN"                = var.domain
-    "KEY"                   = each.key,
+    "KEY"                   = each.key
     "HAS_PUBLIC_IP"         = var.public_ip != null ? "true" : "false"
     "CLUSTER_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.workers[each.key].network_device
     : lower(dev.mac_address) if dev.vlan_id == local.cluster_vlan_id][0]
@@ -71,7 +75,9 @@ resource "terraform_data" "workers_machine_configs" {
     : lower(dev.mac_address) if dev.vlan_id == var.network_config.external_vlan_id][0]
     "INTERNAL_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.workers[each.key].network_device
     : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_vlan_id][0]
-  }
+    "INTERNAL_SERVICES_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.workers[each.key].network_device
+    : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_services_vlan_id][0]
+  } 
 
   provisioner "local-exec" {
     when        = create

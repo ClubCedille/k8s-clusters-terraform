@@ -1,6 +1,6 @@
 data "external" "cluster_token" {
   depends_on = [ terraform_data.cluster ]
-  program = ["bash", "-c", "./omnictl kubeconfig --cluster ${var.name} --service-account --user argocd --force tmp-${var.name}-kubeconfig && cat tmp-${var.name}-kubeconfig | yq -j -c '.users[0].user'"]
+  program = ["bash", "-c", "./omnictl kubeconfig --cluster ${var.name} --service-account --user external_token --force tmp-${var.name}-kubeconfig && cat tmp-${var.name}-kubeconfig | yq -j -c '.users[0].user'"]
 }
 
 resource "argocd_project" "project" {
@@ -41,9 +41,11 @@ resource "argocd_cluster" "talos" {
   metadata {
       labels = {
         "etsmtl.club/external-network" = "true"
+        "etsmtl.club/internal-network" = "true"
       }
       annotations = {
         "etsmtl.club/external-ip" = "${var.public_ip}"
+        "etsmtl.club/internal-ip" = "${cidrhost(var.network_config.internal_services_subnet, 1 + var.cluster_id)}"
       }
     }
 }

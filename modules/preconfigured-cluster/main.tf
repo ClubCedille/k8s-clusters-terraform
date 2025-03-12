@@ -13,10 +13,12 @@ module "cluster" {
     network_config = {
         internal_vlan_id = 21
         external_vlan_id = 247
+        internal_services_vlan_id = 500
         common_cidr = 16
         cluster_cidr = 25
         interface = "vmbr1"
         common_subnet = "10.10.0.0"
+        internal_services_subnet = "10.50.0.0/24"
     }
 
     public_ip = var.public_ip

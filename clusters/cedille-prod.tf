@@ -1,8 +1,8 @@
-module "cedille-prod" {
+module "cedille-production" {
   source = "../modules/preconfigured-cluster"
 
   cluster_id      = 5
-  name            = "k8s-cedille-prod"
+  name            = "k8s-cedille-production"
   public_ip       = "142.137.247.73"
   owner_tag       = "CEDILLE"
   environment_tag = "PRODUCTION"

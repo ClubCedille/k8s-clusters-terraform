@@ -9,6 +9,7 @@ spec:
     machine:
       nodeLabels:
         etsmtl.club/external-network: "$HAS_PUBLIC_IP"
+        etsmtl.club/internal-network: "true"
       kubelet:
         nodeIP:
           validSubnets:
@@ -20,11 +21,12 @@ spec:
         interfaces:
           - deviceSelector:
               hardwareAddr: $INTERNAL_INTERFACE_MAC
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 10
+            dhcp: false
+          - deviceSelector:
+              hardwareAddr: $INTERNAL_SERVICES_INTERFACE_MAC
+            dhcp: false
             routes:
-              - network: 10.0.21.0/24
+              - network: $INTERNAL_SERVICES_SUBNET
           - deviceSelector:
               hardwareAddr: $CLUSTER_INTERFACE_MAC
             dhcp: false

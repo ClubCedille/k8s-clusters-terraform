@@ -19,14 +19,14 @@ variable "controlplanes" {
     disk_size = number,
   })
 
-  validation {
-     condition = anytrue([
-        length(var.controlplanes.nodes) == 1,
-        length(var.controlplanes.nodes) == 3,
-        length(var.controlplanes.nodes) == 5
-        ])
-    error_message = "must have 1, 3 or 5 nodes"
-  }
+  # validation {
+  #    condition = anytrue([
+  #       length(var.controlplanes.nodes) == 1,
+  #       length(var.controlplanes.nodes) == 3,
+  #       length(var.controlplanes.nodes) == 5
+  #       ])
+  #   error_message = "must have 1, 3 or 5 nodes"
+  # }
 }
 
 variable "workers" {

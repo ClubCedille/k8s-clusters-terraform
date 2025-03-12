@@ -5,7 +5,7 @@ resource "vault_auth_backend" "kubernetes" {
 
 resource "vault_kubernetes_auth_backend_config" "kubernetes_auth_backend" {
   backend                = vault_auth_backend.kubernetes.path
-  kubernetes_host        = "${var.omni_url}?cluster=${var.name}"
+  kubernetes_host        = "${var.omni_url}"
   token_reviewer_jwt     = data.external.cluster_token.result["token"]
   disable_iss_validation = true
   disable_local_ca_jwt   = true

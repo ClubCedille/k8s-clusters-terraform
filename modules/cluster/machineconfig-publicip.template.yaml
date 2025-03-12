@@ -48,3 +48,4 @@ metadata:
   namespace: default
   type: MachineLabels.omni.sidero.dev
 spec: {}
+
