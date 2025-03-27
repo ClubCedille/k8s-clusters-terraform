@@ -37,6 +37,10 @@ terraform {
       source = "hashicorp/vault"
       version = "~> 4.6.0"
     }
+    b2 = {
+      source  = "backblaze/b2"
+      version = "0.10.0"
+    }
   }
 }
 
@@ -68,4 +72,9 @@ provider "github" {
 provider "vault" {
   token = var.vault_root_token
   address = var.vault_address
+}
+
+provider "b2" {
+  application_key_id = var.b2_application_key_id
+  application_key    = var.b2_application_key
 }

@@ -60,3 +60,19 @@ variable "onboard_argocd" {
   type = bool
   default = true
 }
+
+variable "b2_application_key_id" {
+  type = string
+}
+
+variable "b2_application_key" {
+  type = string
+}
+
+variable "lifecycle_rules" {
+  type = list(object({
+    days_from_hiding_to_deleting = optional(number)
+    days_from_uploading_to_hiding = optional(number)
+    file_name_prefix = optional(string)
+  }))
+}

@@ -35,4 +35,10 @@ module "cluster" {
     onboard_argocd = var.onboard_argocd
 
     omni_url = "https://cedille.kubernetes.omni.siderolabs.io"
+    
+    bucket_name = "${var.name}-bucket"
+    application_key_name = "${var.name}-application-key"
+    lifecycle_rules = var.lifecycle_rules
+    b2_application_key_id = var.b2_application_key_id
+    b2_application_key = var.b2_application_key
 }

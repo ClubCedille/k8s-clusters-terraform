@@ -25,5 +25,9 @@ terraform {
       source = "argoproj-labs/argocd"
       version = "7.1.0"
     }
+    b2 = {
+      source = "Backblaze/b2"
+      version = "0.8.4"
+    }
   }
 }

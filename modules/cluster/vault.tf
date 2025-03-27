@@ -53,3 +53,14 @@ resource "vault_kubernetes_auth_backend_role" "kubernetes_auth_backend_role_writ
     bound_service_account_namespaces = ["*"]
     token_policies        = [vault_policy.kubernetes_writer_policy.name]
 }
+
+resource "vault_kv_secret_v2" "velero_backup_bucket" {
+  mount               = "secret"
+  name                = "${vault_mount.kvv2-kubernetes.path}/data/velero/backup"
+  data_json = jsonencode({
+    bucket_name       = b2_bucket.velero_backup_bucket.bucket_name
+    bucket_id         = b2_bucket.velero_backup_bucket.bucket_id
+    application_key_id = b2_bucket.velero_backup_bucket.application_key_id
+    application_key   = b2_bucket.velero_backup_bucket.application_key
+  })
+}
