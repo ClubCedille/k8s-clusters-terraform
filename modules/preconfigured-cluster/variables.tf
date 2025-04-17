@@ -78,5 +78,5 @@ variable "lifecycle_rules" {
     days_from_uploading_to_hiding = optional(number)
     file_name_prefix = optional(string)
   }))
-  default = null
+  default = []
 }
