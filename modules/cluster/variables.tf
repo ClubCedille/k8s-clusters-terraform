@@ -103,14 +103,17 @@ variable "onboard_argocd" {
 
 variable "b2_application_key_id" {
   type = string
+  default = ""
 }
 
 variable "b2_application_key" {
   type = string
+  default = ""
 }
 
 variable "bucket_name" {
   type = string
+  default = ""
 }
 
 variable "bucket_type" {
