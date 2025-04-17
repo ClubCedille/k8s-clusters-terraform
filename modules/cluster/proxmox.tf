@@ -55,13 +55,6 @@ resource "proxmox_virtual_environment_vm" "controlplanes" {
     bridge = var.network_config.interface
     vlan_id = local.cluster_vlan_id
   }
-
-  // vlan internal_services
-  network_device {
-    bridge = var.network_config.interface
-    vlan_id = var.network_config.internal_services_vlan_id
-  }
-
   on_boot = true
 
   smbios {
@@ -126,12 +119,6 @@ resource "proxmox_virtual_environment_vm" "workers" {
       bridge = var.network_config.interface
       vlan_id = var.network_config.external_vlan_id
     }
-  }
-
-  // vlan internal_services
-  network_device {
-    bridge = var.network_config.interface
-    vlan_id = var.network_config.internal_services_vlan_id
   }
 
   on_boot = true

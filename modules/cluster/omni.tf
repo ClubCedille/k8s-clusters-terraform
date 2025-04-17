@@ -20,10 +20,7 @@ resource "terraform_data" "controlplanes_machine_configs" {
   input = {
     "ROLE"                  = "controlplane"
     "UUID"                  = random_uuid.controlplanes_uuids[each.key].result
-    "NETWORK_CONFIG_SUBNET" = local.subnet
-    "INTERNAL_SERVICES_SUBNET" = var.network_config.internal_services_subnet
-    "IP"                    = "${cidrhost(local.subnet, 5 + parseint(each.key, 10))}/${var.network_config.cluster_cidr}"
-    "GATEWAY"               = "${cidrhost(local.subnet, 1)}"
+    "INTERNAL_SUBNET"       = var.network_config.internal_subnet
     "NAME"                  = var.name
     "DOMAIN"                = var.domain
     "KEY"                   = each.key
@@ -32,8 +29,6 @@ resource "terraform_data" "controlplanes_machine_configs" {
     : lower(dev.mac_address) if dev.vlan_id == local.cluster_vlan_id][0]
     "INTERNAL_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.controlplanes[each.key].network_device
     : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_vlan_id][0]
-    "INTERNAL_SERVICES_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.controlplanes[each.key].network_device
-    : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_services_vlan_id][0]
   }
 
   provisioner "local-exec" {
@@ -61,10 +56,7 @@ resource "terraform_data" "workers_machine_configs" {
   input = {
     "ROLE"                  = "worker"
     "UUID"                  = random_uuid.workers_uuids[each.key].result
-    "NETWORK_CONFIG_SUBNET" = local.subnet
-    "INTERNAL_SERVICES_SUBNET" = var.network_config.internal_services_subnet
-    "IP"                    = "${cidrhost(local.subnet, 15 + parseint(each.key, 10))}/${var.network_config.cluster_cidr}"
-    "GATEWAY"               = "${cidrhost(local.subnet, 1)}"
+    "INTERNAL_SUBNET"       = var.network_config.internal_subnet
     "NAME"                  = var.name
     "DOMAIN"                = var.domain
     "KEY"                   = each.key
@@ -75,8 +67,6 @@ resource "terraform_data" "workers_machine_configs" {
     : lower(dev.mac_address) if dev.vlan_id == var.network_config.external_vlan_id][0]
     "INTERNAL_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.workers[each.key].network_device
     : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_vlan_id][0]
-    "INTERNAL_SERVICES_INTERFACE_MAC" = [for dev in proxmox_virtual_environment_vm.workers[each.key].network_device
-    : lower(dev.mac_address) if dev.vlan_id == var.network_config.internal_services_vlan_id][0]
   } 
 
   provisioner "local-exec" {
@@ -124,7 +114,6 @@ resource "terraform_data" "cluster" {
     "NAME"          = var.name
     "K8S_VERSION"   = var.k8s_version
     "TALOS_VERSION" = var.talos_version
-    "NETWORK_CONFIG_SUBNET" = local.subnet
   }
 
   provisioner "local-exec" {
@@ -134,20 +123,8 @@ resource "terraform_data" "cluster" {
   }
 
   provisioner "local-exec" {
-    when        = create
-    environment = self.input
-    command     = "envsubst < ${path.module}/controlplanes-patch.yaml | cat; envsubst < ${path.module}/controlplanes-patch.template.yaml | ./omnictl apply -f /dev/stdin"
-  }
-
-  provisioner "local-exec" {
     when        = destroy
     environment = self.output
     command     = "envsubst < ${path.module}/cluster.template.yaml | ./omnictl cluster template delete -v --destroy-disconnected-machines -f /dev/stdin"
-  }
-
-  provisioner "local-exec" {
-    when        = destroy
-    environment = self.output
-    command     = "./omnictl delete ConfigPatches 600-$NAME-controlplanes"
   }
 }

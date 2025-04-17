@@ -45,7 +45,7 @@ resource "argocd_cluster" "talos" {
       }
       annotations = {
         "etsmtl.club/external-ip" = "${var.public_ip}"
-        "etsmtl.club/internal-ip" = "${cidrhost(var.network_config.internal_services_subnet, 1 + var.cluster_id)}"
+        "etsmtl.club/internal-ip" = "${cidrhost(var.network_config.internal_subnet, 1 + var.cluster_id)}"
       }
     }
 }

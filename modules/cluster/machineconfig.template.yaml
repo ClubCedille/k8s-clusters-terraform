@@ -10,32 +10,16 @@ spec:
       nodeLabels:
         etsmtl.club/external-network: "$HAS_PUBLIC_IP"
         etsmtl.club/internal-network: "true"
-      kubelet:
-        nodeIP:
-          validSubnets:
-          - $NETWORK_CONFIG_SUBNET
       network:
         hostname: "$NAME-$ROLE-$KEY.$DOMAIN"
         disableSearchDomain: true
         nameservers: ["1.1.1.1", "1.0.0.1"]
         interfaces:
-          - deviceSelector:
-              hardwareAddr: $INTERNAL_INTERFACE_MAC
-            dhcp: false
-          - deviceSelector:
-              hardwareAddr: $INTERNAL_SERVICES_INTERFACE_MAC
-            dhcp: false
-            routes:
-              - network: $INTERNAL_SERVICES_SUBNET
-          - deviceSelector:
-              hardwareAddr: $CLUSTER_INTERFACE_MAC
-            dhcp: false
-            addresses:
-              - $IP
-            routes:
-              - network: $NETWORK_CONFIG_SUBNET
-              - network: 0.0.0.0/0
-                gateway: $GATEWAY
+            - deviceSelector:
+                hardwareAddr: $INTERNAL_INTERFACE_MAC
+              dhcp: false
+              routes:
+                - network: $INTERNAL_SUBNET
 ---
 metadata:
   id: $UUID

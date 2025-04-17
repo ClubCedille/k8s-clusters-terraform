@@ -9,10 +9,6 @@ spec:
     machine:
       nodeLabels:
         etsmtl.club/external-network: "$HAS_PUBLIC_IP"
-      kubelet:
-        nodeIP:
-          validSubnets:
-          - $NETWORK_CONFIG_SUBNET
       network:
         hostname: "$NAME-$ROLE-$KEY.$DOMAIN"
         disableSearchDomain: true
@@ -20,25 +16,14 @@ spec:
         interfaces:
           - deviceSelector:
               hardwareAddr: $INTERNAL_INTERFACE_MAC
-            dhcp: true
-            dhcpOptions:
-              routeMetric: 10
+            dhcp: false
             routes:
-              - network: 10.0.21.0/24
+              - network: $INTERNAL_SUBNET
           - deviceSelector:
               hardwareAddr: $EXTERNAL_INTERFACE_MAC
             dhcp: false
             routes:
               - network: 142.137.247.0/24
-          - deviceSelector:
-              hardwareAddr: $CLUSTER_INTERFACE_MAC
-            dhcp: false
-            addresses:
-              - $IP
-            routes:
-              - network: $NETWORK_CONFIG_SUBNET
-              - network: 0.0.0.0/0
-                gateway: $GATEWAY
 ---
 metadata:
   id: $UUID

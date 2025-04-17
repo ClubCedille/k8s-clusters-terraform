@@ -11,14 +11,11 @@ module "cluster" {
     talos_image_id = "iso/metal-amd64-omni-cedille-v1.8.0-2.iso"
 
     network_config = {
-        internal_vlan_id = 21
+        internal_vlan_id = 500
         external_vlan_id = 247
-        internal_services_vlan_id = 500
-        common_cidr = 16
-        cluster_cidr = 25
+        cluster_vlan_id = 1000 + var.cluster_id
         interface = "vmbr1"
-        common_subnet = "10.10.0.0"
-        internal_services_subnet = "10.50.0.0/24"
+        internal_subnet = "10.5.0.0/24"
     }
 
     public_ip = var.public_ip

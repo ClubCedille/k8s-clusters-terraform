@@ -46,11 +46,8 @@ variable "network_config" {
     interface = string,
     internal_vlan_id = number,
     external_vlan_id = number,  
-    internal_services_vlan_id = number,
-    common_subnet = string,
-    internal_services_subnet = string,
-    common_cidr = number,
-    cluster_cidr = number,
+    internal_subnet = string,
+    cluster_vlan_id = number,
   }) 
 }
 
