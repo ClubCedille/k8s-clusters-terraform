@@ -100,3 +100,42 @@ variable "onboard_argocd" {
   type = bool
   default = true
 }
+
+variable "b2_application_key_id" {
+  type = string
+  default = null
+}
+
+variable "b2_application_key" {
+  type = string
+  default = null
+}
+
+variable "bucket_name" {
+  type = string
+  default = ""
+}
+
+variable "bucket_type" {
+  type = string
+  default = "allPrivate"
+}
+
+variable "application_key_name" {
+  type = string
+  default = "velero-backup-key"
+}
+
+variable "application_key_capabilities" {
+  type = list(string)
+  default = ["listBuckets", "listFiles", "readFiles", "writeFiles", "deleteFiles"]
+}
+
+variable "lifecycle_rules" {
+  type = list(object({
+    days_from_hiding_to_deleting = optional(number)
+    days_from_uploading_to_hiding = optional(number)
+    file_name_prefix = optional(string)
+  }))
+  default = []
+}

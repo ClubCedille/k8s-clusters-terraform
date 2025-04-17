@@ -5,6 +5,7 @@ variable "name" {
 
 variable "cluster_id" {
   type = number
+  
   validation {
     condition = var.cluster_id >= 1 && var.cluster_id <= 512
     error_message = "must be between 1 and 512"
@@ -59,4 +60,23 @@ variable "environment_tag" {
 variable "onboard_argocd" {
   type = bool
   default = true
+}
+
+variable "b2_application_key_id" {
+  type = string
+  default = null
+}
+
+variable "b2_application_key" {
+  type = string
+  default = null
+}
+
+variable "lifecycle_rules" {
+  type = list(object({
+    days_from_hiding_to_deleting = optional(number)
+    days_from_uploading_to_hiding = optional(number)
+    file_name_prefix = optional(string)
+  }))
+  default = []
 }

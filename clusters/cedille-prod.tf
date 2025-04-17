@@ -21,6 +21,13 @@ module "cedille-production" {
     nodes     = ["pve01", "pve02", "pve03", "pve04", "pve06", "pve07", "pve08"]
   }
 
+  b2_application_key_id = var.b2_application_key_id
+  b2_application_key    = var.b2_application_key
+  lifecycle_rules       = [{
+    days_from_hiding_to_deleting = 30
+    days_from_uploading_to_hiding = 7
+    file_name_prefix = "k8s-cedille-production"
+  }]
 }
 
 module "cedille-prod-repo" {
