@@ -13,13 +13,10 @@ spec:
       network:
         hostname: "$NAME-$ROLE-$KEY.$DOMAIN"
         disableSearchDomain: true
-        nameservers: ["1.1.1.1", "1.0.0.1"]
         interfaces:
-            - deviceSelector:
-                hardwareAddr: $INTERNAL_INTERFACE_MAC
-              dhcp: false
-              routes:
-                - network: $INTERNAL_SUBNET
+          - deviceSelector:
+              hardwareAddr: $INTERNAL_INTERFACE_MAC
+            dhcp: false
 ---
 metadata:
   id: $UUID

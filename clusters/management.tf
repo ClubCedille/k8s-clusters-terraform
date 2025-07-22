@@ -6,7 +6,7 @@ module "cluster_management" {
   public_ip       = "142.137.247.86"
   owner_tag       = "COMMUN"
   environment_tag = "MANAGEMENT"
-  onboard_argocd  = false
+  onboard_argocd  =  true
 
   controlplanes = {
     cpu_cores = 4

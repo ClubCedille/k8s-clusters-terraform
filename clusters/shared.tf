@@ -1,10 +1,10 @@
-module "cedille-production" {
+module "cluster_shared" {
   source = "../modules/preconfigured-cluster"
 
-  cluster_id      = 5
-  name            = "k8s-cedille-production"
-  public_ip       = "142.137.247.73"
-  owner_tag       = "CEDILLE"
+  cluster_id      = 9
+  name            = "k8s-shared"
+  public_ip       = "142.137.247.75"
+  owner_tag       = "SHARED"
   environment_tag = "PRODUCTION"
   onboard_argocd  = true
 
@@ -23,9 +23,9 @@ module "cedille-production" {
 
 }
 
-module "cedille-prod-repo" {
+module "repo_shared" {
   source = "../modules/repo"
-  name = "k8s-cedille-production"
+  name = "k8s-shared"
   protected = false
   public = true
 }

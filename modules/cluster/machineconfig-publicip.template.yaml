@@ -9,16 +9,14 @@ spec:
     machine:
       nodeLabels:
         etsmtl.club/external-network: "$HAS_PUBLIC_IP"
+        etsmtl.club/internal-network: "true"
       network:
         hostname: "$NAME-$ROLE-$KEY.$DOMAIN"
         disableSearchDomain: true
-        nameservers: ["1.1.1.1", "1.0.0.1"]
         interfaces:
           - deviceSelector:
               hardwareAddr: $INTERNAL_INTERFACE_MAC
             dhcp: false
-            routes:
-              - network: $INTERNAL_SUBNET
           - deviceSelector:
               hardwareAddr: $EXTERNAL_INTERFACE_MAC
             dhcp: false
@@ -33,4 +31,3 @@ metadata:
   namespace: default
   type: MachineLabels.omni.sidero.dev
 spec: {}
-
