@@ -60,3 +60,16 @@ variable "onboard_argocd" {
   type = bool
   default = true
 }
+
+variable "switch_url" {
+  type = string
+}
+
+variable "switch_username" {
+    type = string
+}
+
+variable "switch_password" {
+   type = string
+   sensitive = true
+}

@@ -48,3 +48,14 @@ variable "vault_root_token" {
 variable "vault_address" {
   
 }
+
+variable "switch_username" {
+    type = string
+} 
+variable "switch_password" {
+    type = string
+    sensitive = true
+} 
+variable "switch_url" {
+    type = string
+}

@@ -32,4 +32,8 @@ module "cluster" {
     onboard_argocd = var.onboard_argocd
 
     omni_url = "https://cedille.kubernetes.omni.siderolabs.io"
+
+    switch_url = var.switch_url
+    switch_username = var.switch_username
+    switch_password = var.switch_password
 }

@@ -21,6 +21,9 @@ module "cluster_shared" {
     nodes     = ["pve01", "pve02", "pve03", "pve04", "pve06", "pve07", "pve08"]
   }
 
+  switch_username = var.switch_username
+  switch_password = var.switch_password
+  switch_url = var.switch_url
 }
 
 module "repo_shared" {

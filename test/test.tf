@@ -1,13 +1,5 @@
 terraform {
   required_version = ">= 1.6.0"
-  cloud { 
-    
-    organization = "cedille" 
-
-    workspaces { 
-      name = "k8s-clusters" 
-    } 
-  } 
 
   required_providers {
     kubernetes = {
@@ -23,7 +15,7 @@ terraform {
     }
     proxmox = {
       source  = "bpg/proxmox"
-      version = "0.70.0"
+      version = "0.66.1"
     }
     random = {
       source  = "hashicorp/random"
@@ -32,18 +24,6 @@ terraform {
     argocd = {
       source  = "argoproj-labs/argocd"
       version = "7.1.0"
-    }
-    vault = {
-      source = "hashicorp/vault"
-      version = "~> 4.6.0"
-    }
-    nxos = {
-      source = "CiscoDevNet/nxos"
-      version = "0.5.10"
-    }
-    restapi = {
-      source = "Mastercard/restapi"
-      version = "2.0.1"
     }
   }
 }
@@ -73,14 +53,66 @@ provider "github" {
   }
 }
 
-provider "vault" {
-  token = var.vault_root_token
-  address = var.vault_address
+variable "proxmox_endpoint" {
+  type = string
 }
 
-provider "nxos" {
-  username = var.switch_username
-  password = var.switch_password
-  url      = var.switch_url
-  insecure = true
+variable "proxmox_api_token_id" {
+  type = string
+}
+
+variable "proxmox_api_token_secret" {
+  type = string
+  sensitive = true
+}
+
+variable "argocd_addr" {
+  type = string
+}
+
+variable "argocd_admin_password" {
+  type = string
+  sensitive = true
+}
+
+variable "github_owner" {
+  type = string
+}
+
+variable "github_app_id" {
+  type = string
+}
+
+variable "github_installation_id" {
+  type = string
+}
+
+variable "github_pem_file" {
+  type = string
+  sensitive = true
+}
+
+module "test_etcd" {
+  source = "../modules/preconfigured-cluster"
+
+  cluster_id      = 4
+  name            = "k8s-test-etcd"
+  public_ip       = null
+  owner_tag       = "CEDILLE"
+  environment_tag = "TESTING"
+  onboard_argocd  = false
+
+  controlplanes = {
+    cpu_cores = 4
+    disk_size = 40
+    memory    = 4096
+    nodes     = ["pve04"]
+  }
+  workers = {
+    cpu_cores = 8
+    disk_size = 100
+    memory    = 16384
+    nodes     = []
+  }
+
 }

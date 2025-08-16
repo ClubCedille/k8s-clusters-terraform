@@ -1,3 +1,4 @@
+
 module "cluster_management_v2" {
   source = "../modules/preconfigured-cluster"
 
@@ -20,6 +21,10 @@ module "cluster_management_v2" {
     memory    = 16384
     nodes     = ["pve01", "pve02", "pve03", "pve04", "pve06", "pve07", "pve08"]
   }
+
+  switch_username = var.switch_username
+  switch_password = var.switch_password
+  switch_url = var.switch_url
 }
 
 module "k8s-management-v2-repo" {

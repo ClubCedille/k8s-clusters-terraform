@@ -25,5 +25,14 @@ terraform {
       source = "argoproj-labs/argocd"
       version = "7.1.0"
     }
+    nxos = {
+      source = "CiscoDevNet/nxos"
+      version = "0.5.10"
+    }
+    restapi = {
+      source = "Mastercard/restapi"
+      version = "2.0.1"
+    }
   }
 }
+

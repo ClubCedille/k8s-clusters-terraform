@@ -20,6 +20,10 @@ module "cluster_management" {
     memory    = 16384
     nodes     = ["pve01", "pve02", "pve03", "pve04", "pve06", "pve07", "pve08"]
   }
+
+  switch_username = var.switch_username
+  switch_password = var.switch_password
+  switch_url = var.switch_url
 }
 
 resource "vault_jwt_auth_backend" "tfc_auth_backend" {

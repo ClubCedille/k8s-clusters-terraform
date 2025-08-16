@@ -1,9 +1,9 @@
-module "cedille-production" {
+module "cedille-production-v2" {
   source = "../modules/preconfigured-cluster"
 
-  cluster_id      = 5
-  name            = "k8s-cedille-production"
-  public_ip       = "142.137.247.73"
+  cluster_id      = 10
+  name            = "k8s-cedille-production-v2"
+  public_ip       = "142.137.247.79"
   owner_tag       = "CEDILLE"
   environment_tag = "PRODUCTION"
   onboard_argocd  = true
@@ -24,11 +24,12 @@ module "cedille-production" {
   switch_username = var.switch_username
   switch_password = var.switch_password
   switch_url = var.switch_url
+
 }
 
-module "cedille-prod-repo" {
+module "cedille-prod-v2-repo" {
   source = "../modules/repo"
-  name = "k8s-cedille-production"
+  name = "k8s-cedille-production-v2"
   protected = false
   public = true
 }

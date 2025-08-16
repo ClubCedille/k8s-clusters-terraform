@@ -5,7 +5,6 @@ data "external" "cluster_token" {
 
 resource "argocd_project" "project" {
   for_each = toset(var.onboard_argocd ? ["true"] : []) 
-  depends_on = [ argocd_cluster.talos ]
   metadata {
     name      = var.name
     namespace = "argocd"
@@ -30,6 +29,7 @@ resource "argocd_project" "project" {
 }
 
 resource "argocd_cluster" "talos" {
+  depends_on = [ argocd_project.project ]
   for_each = toset(var.onboard_argocd ? ["true"] : []) 
   server = "${var.omni_url}?cluster=${var.name}"
   name   = var.name
