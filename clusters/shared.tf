@@ -9,15 +9,15 @@ module "cluster_shared" {
   onboard_argocd  = true
 
   controlplanes = {
-    cpu_cores = 4
+    cpu_cores = 6
     disk_size = 40
-    memory    = 8192
+    memory    = 10240
     nodes     = ["pve03", "pve04", "pve06", "pve07", "pve08"]
   }
   workers = {
-    cpu_cores = 8
+    cpu_cores = 10
     disk_size = 250
-    memory    = 24576
+    memory    = 31949
     nodes     = ["pve01", "pve02", "pve03", "pve04", "pve06", "pve07", "pve08"]
   }
 
